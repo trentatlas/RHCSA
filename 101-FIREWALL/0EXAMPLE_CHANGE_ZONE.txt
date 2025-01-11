@@ -1,0 +1,64 @@
+
+[root@rhellab2 ~]# firewall-cmd --get-default-zone
+public
+
+
+[root@rhellab2 ~]# firewall-cmd --set-default-zone=block
+success
+
+
+-- CHANGE ZONE on interface
+
+[root@rhellab2 ~]# firewall-cmd --zone=drop --change-interface=enp1s0 --permanent
+The interface is under control of NetworkManager, setting zone to 'drop'.
+success
+
+Add service to zone
+[root@rhellab2 ~]# firewall-cmd --list-all --zone=drop
+drop (active)
+  target: DROP
+  icmp-block-inversion: no
+  interfaces: enp1s0
+  sources: 
+  services: 
+
+
+[root@rhellab2 ~]# firewall-cmd --add-service=ssh --zone=drop --permanent
+success
+
+[root@rhellab2 ~]# firewall-cmd --runtime-to-permanent 
+success
+[root@rhellab2 ~]# firewall-cmd --reload
+success
+
+[root@rhellab2 ~]# systemctl restart firewalld
+
+[root@rhellab2 ~]# firewall-cmd --list-all --zone=drop
+drop (active)
+  target: DROP
+  icmp-block-inversion: no
+  interfaces: enp1s0
+  sources: 
+  services: ssh
+
+
+
+==================================
+
+[root@rhellab2 ~]# firewall-cmd --zone=trusted --change-interface=enp6s0 --permanent
+The interface is under control of NetworkManager and already bound to 'trusted'
+The interface is under control of NetworkManager, setting zone to 'trusted'.
+success
+
+
+
+[root@rhellab2 ~]# firewall-cmd --list-all --zone=trusted
+trusted (active)
+  target: ACCEPT
+  icmp-block-inversion: no
+  interfaces: enp6s0
+
+
+
+
+

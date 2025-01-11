@@ -1,0 +1,30 @@
+
+nmcli connection add con-name LAB102 ipv4.addresses 192.168.3.102/24 ipv4.gateway 192.168.3.1 ipv4.method manual ipv4.dns 1.1.1.1 type ethernet connection.interface-name enp1s0
+
+connection.zone:                        drop
+
+ipv4.method:                            manual
+ipv4.dns:                               1.1.1.1
+
+ipv4.addresses:                         192.168.3.102/24
+ipv4.gateway:                           192.168.3.1
+
+DNS
+ipv4.dns-search:                        --
+ipv4.dns-options:                       --
+
+ADD
++ ARRAY of values
+- MINUS take awway value
+no + [ replace ]
+
++ipv4.dns-options rotate
+ipv4.dns-search aegisdawn.com +ipv4.dns-options edns0 trust-ad rotate
+
+
+
+NON ROUTEABLE
+
+nmcli connection add con-name VIRT102 ipv4.addresses 192.168.122.102/24 ipv4.never-default yes  ipv4.method manual type ethernet connection.interface-name enp6s0
+
+

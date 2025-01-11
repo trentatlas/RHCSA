@@ -1,0 +1,52 @@
+[root@rhellab2 ~]# firewall-cmd --get-default-zone
+block
+
+[root@rhellab2 ~]# firewall-cmd --list-services --zone=public
+cockpit dhcpv6-client ssh
+[root@rhellab2 ~]# firewall-cmd --list-services --zone=drop
+ssh
+[root@rhellab2 ~]# firewall-cmd --list-services --zone=trusted
+
+[root@rhellab2 ~]# 
+
+GET ZONES
+root@rhellab2 ~]# firewall-cmd --get-zones
+block dmz drop external home internal nm-shared public trusted work
+
+SUPPORTED services
+[root@rhellab2 ~]# firewall-cmd --get-services
+RH-Satellite-6 RH-Satellite-6-capsule afp amanda-client amanda-k5-client amqp amqps apcupsd audit ausweisapp2 bacula bacula-client bb bgp bitcoin bitcoin-rpc bitcoin-testnet bitcoin-testnet-rpc bittorrent-lsd ceph ceph-mon cfengine checkmk-agent cockpit collectd condor-collector cratedb ctdb dhcp dhcpv6 dhcpv6-client distcc dns dns-over-tls docker-registry docker-swarm dropbox-lansync elasticsearch etcd-client etcd-server finger foreman foreman-proxy freeipa-4 freeipa-ldap freeipa-ldaps freeipa-replication freeipa-trust ftp galera ganglia-client ganglia-master git gpsd grafana gre high-availability http http3 https ident imap imaps ipfs ipp ipp-client ipsec irc ircs iscsi-target isns jenkins kadmin kdeconnect kerberos kibana klogin kpasswd kprop kshell kube-api kube-apiserver kube-control-plane kube-control-plane-secure kube-controller-manager kube-controller-manager-secure kube-nodeport-services kube-scheduler kube-scheduler-secure kube-worker kubelet kubelet-readonly kubelet-worker ldap ldaps libvirt libvirt-tls lightning-network llmnr llmnr-tcp llmnr-udp managesieve matrix mdns memcache minidlna mongodb mosh mountd mqtt mqtt-tls ms-wbt mssql murmur mysql nbd netbios-ns netdata-dashboard nfs nfs3 nmea-0183 nrpe ntp nut openvpn ovirt-imageio ovirt-storageconsole ovirt-vmconsole plex pmcd pmproxy pmwebapi pmwebapis pop3 pop3s postgresql privoxy prometheus prometheus-node-exporter proxy-dhcp ps3netsrv ptp pulseaudio puppetmaster quassel radius rdp redis redis-sentinel rpc-bind rquotad rsh rsyncd rtsp salt-master samba samba-client samba-dc sane sip sips slp smtp smtp-submission smtps snmp snmptls snmptls-trap snmptrap spideroak-lansync spotify-sync squid ssdp ssh steam-streaming svdrp svn syncthing syncthing-gui synergy syslog syslog-tls telnet tentacle tftp tile38 tinc tor-socks transmission-client upnp-client vdsm vnc-server wbem-http wbem-https wireguard ws-discovery ws-discovery-client ws-discovery-tcp ws-discovery-udp wsman wsmans xdmcp xmpp-bosh xmpp-client xmpp-local xmpp-server zabbix-agent zabbix-server zerotier
+
+
+INSPECT Service
+[root@rhellab2 ~]# firewall-cmd --info-service=http
+http
+  ports: 80/tcp
+  protocols: 
+  source-ports: 
+  modules: 
+  destination: 
+  includes: 
+  helpers: 
+[root@rhellab2 ~]# firewall-cmd --info-service=samba
+samba
+  ports: 139/tcp 445/tcp
+  protocols: 
+  source-ports: 
+  modules: 
+  destination: 
+  includes: samba-client
+  helpers: 
+
+[root@rhellab2 ~]# firewall-cmd --info-service=RH-Satellite-6
+RH-Satellite-6
+  ports: 5000/tcp 5646-5647/tcp 5671/tcp 8000/tcp 8080/tcp 9090/tcp
+  protocols: 
+  source-ports: 
+  modules: 
+  destination: 
+  includes: foreman
+  helpers: 
+
+
+

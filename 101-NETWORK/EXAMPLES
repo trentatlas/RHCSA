@@ -4,3 +4,23 @@
  #ss
  #nmcli
  #nmtui
+
+ == ip 
+   
+    ip link show
+    ip address show
+    ip -br addr
+    ip -br neighbor
+    ip route show
+
+ == ss
+
+    #ss -plunt
+    #ss -lt
+
+ == nmcli
+ nmcli con show --active
+ nmcli con reload NAME
+ nmcli connection delete RHLAB-ENS3
+ nmcli con mod static-addr ipv4.dns 9.9.9.9
+ 
