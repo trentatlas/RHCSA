@@ -1,3 +1,39 @@
 
--- WORKING WITH
-Fri Jan 10 07:00:42 PM EST 2025
+-- NGINX From SCRATCH
+
+DocumentRoot /usr/share/nginx/html/
+
+ USER -- /etc/passwd
+ nginx:x:976:976:Nginx web server:/var/lib/nginx:/sbin/nologin
+
+ ENABLE
+ [root@rhellab ~]# systemctl enable nginx --now
+ Created symlink /etc/systemd/system/multi-user.target.wants/nginx.service → /usr/lib/systemd/system/nginx.service.
+
+ [root@rhellab html]# systemctl is-enabled nginx
+ enabled
+
+ STATUS
+ root@rhellab html]# systemctl status  nginx
+● nginx.service - The nginx HTTP and reverse proxy server
+     Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: disabled)
+     Active: active (running) since Sat 2025-01-11 00:18:56 GMT; 6min ago
+   Main PID: 16611 (nginx)
+      Tasks: 5 (limit: 48805)
+     Memory: 4.7M
+        CPU: 32ms
+     CGroup: /system.slice/nginx.service
+             ├─16611 "nginx: master process /usr/sbin/nginx"
+             ├─16612 "nginx: worker process"
+             ├─16613 "nginx: worker process"
+             ├─16614 "nginx: worker process"
+             └─16615 "nginx: worker process"
+
+Jan 11 00:18:56 rhellab.aegisdawn.com systemd[1]: Starting The nginx HTTP and reverse proxy server...
+Jan 11 00:18:56 rhellab.aegisdawn.com nginx[16609]: nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+Jan 11 00:18:56 rhellab.aegisdawn.com nginx[16609]: nginx: configuration file /etc/nginx/nginx.conf test is successful
+Jan 11 00:18:56 rhellab.aegisdawn.com systemd[1]: Started The nginx HTTP and reverse proxy server.
+
+  CONFIG
+  /etc/nginx/nginx.conf
+
