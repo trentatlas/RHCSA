@@ -1,2 +1,27 @@
 
+I. Default Kernel - rd.break
+- PAUSE BOOT - ANY KEY
+- e [ edit ]
+- linux line
+ro -> rw
+END -> rd.break
+CTLR-X boot
+
+
+switch_root:/# chroot /sysroot
+sh#passwd root
+sh#touch /.autorelabel
+sh#fixfiles -F onboot
+
+
+#exit
+#exit
+
+
+
+
+
+
+
 - 
+-  
