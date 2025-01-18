@@ -1,5 +1,5 @@
 
-I. Default Kernel - rd.break
+I. Default Kernel - rd.break REDHAT ONLY
 - PAUSE BOOT - ANY KEY
 - e [ edit ]
 - linux line
@@ -19,9 +19,35 @@ sh#fixfiles -F onboot
 
 
 
+II. init=/bin/bash
+
+- rw init=/bin/bash
+- passwd root
+- touch /.autorebel
+- exec /usr/lib/systemd/systemd
 
 
 
+III. emergency.target
+Have to know root password
+CTRL-D root password
 
+#systemctl list-dependencies emergency.target
+
+IV. rescue.target
+CTRL-D root password
+systemd.unit.rescue.target
+
+#systemctl list-dependencies rescue.target
+
+
+ISOLATABLE TARGETS::
+emergency.target
+rescue.target
+multi-user.target
+graphical.target
+
+systemctl get-default
+systemctl set-default
 - 
 -  

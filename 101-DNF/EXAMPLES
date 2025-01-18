@@ -1,0 +1,158 @@
+
+ - create repo
+ HTTP REPO 
+ dnf config-manager --add-repo http://bmf/pub/93LATEST/LATESTAppStream/
+ dnf config-manager --add-repo http://bmf/pub/93LATEST/LATESTBaseOS
+
+ FILE REPO
+ dnf config-manager --add-repo file:///repo/BaseOS
+ dnf config-manager --add-repo file:///repo/AppStream
+
+
+ ==
+[LATESTAppStream_]
+name=created by dnf config-manager from http://bmf/pub/93LATEST/LATESTAppStream/
+baseurl=http://bmf/pub/93LATEST/LATESTAppStream/
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+
+  
+[AppStream]
+name=created by dnf config-manager from file:///repo/AppStream
+baseurl=file:///repo/AppStream
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+
+
+
+
+GROUP INSTALL
+
+[root@rhellab2 ~]# dnf group list
+[root@rhellab2 ~]# dnf group list --available
+
+
+[root@rhellab2 ~]# dnf group list --hidden
+
+
+
+[root@rhellab2 ~]# dnf install @GNOME
+
+[root@rhellab2 ~]# dnf group install "GNOME Applications"
+
+[root@rhellab2 ~]# dnf install @"Container Management"
+
+=============================================
+
+[root@rhellab2 ~]# dnf group list
+Last metadata expiration check: 0:01:31 ago on Sat 18 Jan 2025 01:09:27 PM EST.
+Available Environment Groups:
+   Server with GUI
+   Minimal Install
+   Workstation
+   Virtualization Host
+   Custom Operating System
+Installed Environment Groups:
+   Server
+Installed Groups:
+   Container Management
+   Graphical Administration Tools
+   Headless Management
+   Security Tools
+   System Tools
+Available Groups:
+   Console Internet Tools
+   .NET Development
+   RPM Development Tools
+   Development Tools
+   Legacy UNIX Compatibility
+   Network Servers
+   Scientific Support
+   Smart Card Support
+
+
+   [root@rhellab2 ~]# dnf group list --hidden
+Last metadata expiration check: 0:02:20 ago on Sat 18 Jan 2025 01:09:27 PM EST.
+Available Environment Groups:
+   Server with GUI
+   Minimal Install
+   Workstation
+   Virtualization Host
+   Custom Operating System
+Installed Environment Groups:
+   Server
+Installed Groups:
+   Container Management
+   Debugging Tools
+   KVM platform specific packages
+   Core
+   Graphical Administration Tools
+   Hardware Monitoring Utilities
+   Hardware Support
+   Headless Management
+   Performance Tools
+   Security Tools
+   Server product core
+   Standard
+   System Tools
+Available Groups:
+   Backup Client
+   base-x
+   Conflicts AppStream
+   Console Internet Tools
+   Desktop Debugging and Performance Tools
+   DNS Name Server
+   .NET Development
+   Emacs
+   FTP Server
+   GNOME Applications
+   Graphics Creation Tools
+   Guest Agents
+   Guest Desktop Agents
+   Input Methods
+   Internet Applications
+   Internet Browser
+   Java Development
+   Java Platform
+   Legacy X Window System Compatibility
+   Multimedia
+   Office Suite and Productivity
+   Image based rpm-ostree support
+   Platform Development
+   Hyper-v platform specific packages
+   VMware platform specific packages
+   Printing Client
+   Remote Desktop Clients
+   RPM Development Tools
+   TeX formatting system
+   Virtualization Client
+   Virtualization Hypervisor
+   Virtualization Platform
+   Virtualization Tools
+   Basic Web Server
+   Additional Development
+   Anaconda tools
+   Base
+   Conflicts BaseOS
+   Development Tools
+   Dial-up Networking Support
+   File and Storage Server
+   Fonts
+   GNOME
+   Infiniband Support
+   Large Systems Performance
+   Legacy UNIX Compatibility
+   Mail Server
+   Mainframe Access
+   Network File System Client
+   Network Servers
+   Networking Tools
+   Common NetworkManager submodules
+   Python Web
+   Remote Management for Linux
+   Scientific Support
+   Smart Card Support
+   Windows File Server
+   Workstation product core
