@@ -1,0 +1,96 @@
+
+GROW QCOW DISK
+
+#qemu-img create -f qcow2 RHCSA-UEFI-Q35-LAB2-DISK2.qcow2 42G
+#qemu-img info RHCSA-UEFI-Q35-LAB2.qcow2
+#qemu-img resize RHCSA-UEFI-Q35-LAB2.qcow2 146G
+
+
+================================================
+
+
+-BIOS
+#fdisk /dev/sda
+[root@rhellab2 ~]# cat /proc/partitions
+
+CREATE 3 PRIMARY and 1 EXTENDED
+#fdisk /dev/sdb
+Device     Boot   Start      End Sectors  Size Id Type
+/dev/sdb1          2048  1955839 1953792  954M 83 Linux
+/dev/sdb2       1955840  6150143 4194304    2G 83 Linux
+/dev/sdb3       6150144 12441599 6291456    3G 83 Linux
+
+ EXTENDED 
+
+-- 
+   e   extended (container for logical partitions)
+Select (default e): e
+
+Selected partition 4
+First sector (12441600-88080383, default 12441600): 
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (12441600-88080383, default 88080383): 
+
+Created a new partition 4 of type 'Extended' and of size 36.1 GiB.
+
+Command (m for help): p
+Disk /dev/sdb: 42 GiB, 45097156608 bytes, 88080384 sectors
+Disk model: QEMU HARDDISK   
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x8e715595
+
+Device     Boot    Start      End  Sectors  Size Id Type
+/dev/sdb1           2048  1955839  1953792  954M 83 Linux
+/dev/sdb2        1955840  6150143  4194304    2G 83 Linux
+/dev/sdb3        6150144 12441599  6291456    3G 83 Linux
+/dev/sdb4       12441600 88080383 75638784 36.1G  5 Extended
+
+
+/dev/sdb4       12441600 88080383 75638784 36.1G  5 Extended
+
+Command (m for help): n
+All primary partitions are in use.
+Adding logical partition 5
+First sector (12443648-88080383, default 12443648): 
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (12443648-88080383, default 88080383): +5G
+
+Created a new partition 5 of type 'Linux' and of size 5 GiB.
+
+Command (m for help): p
+Disk /dev/sdb: 42 GiB, 45097156608 bytes, 88080384 sectors
+Disk model: QEMU HARDDISK   
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x8e715595
+
+Device     Boot    Start      End  Sectors  Size Id Type
+/dev/sdb1           2048  1955839  1953792  954M 83 Linux
+/dev/sdb2        1955840  6150143  4194304    2G 83 Linux
+/dev/sdb3        6150144 12441599  6291456    3G 83 Linux
+/dev/sdb4       12441600 88080383 75638784 36.1G  5 Extended
+/dev/sdb5       12443648 22929407 10485760    5G 83 Linux
+
+[root@rhellab2 ~]# ls -ld /dev/sdb*
+brw-rw----. 1 root disk 8, 16 Jan 19 12:43 /dev/sdb
+brw-rw----. 1 root disk 8, 17 Jan 19 12:43 /dev/sdb1
+brw-rw----. 1 root disk 8, 18 Jan 19 12:43 /dev/sdb2
+brw-rw----. 1 root disk 8, 19 Jan 19 12:43 /dev/sdb3
+brw-rw----. 1 root disk 8, 20 Jan 19 12:43 /dev/sdb4
+brw-rw----. 1 root disk 8, 21 Jan 19 12:43 /dev/sdb5
+
+
+--
+
+
+-UEFI
+#gdisk /dev/sda
+
+[root@rhellab2 ~]# cat /proc/partitions 
+
+
+
+-parted 

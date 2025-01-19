@@ -1,0 +1,21 @@
+
+- tar !!!!
+Relative File Namesa
+
+cd /etc
+tar czvf /root/archive.tgz .
+
+untar in diffent /dir
+tar -xvf archive.tgz -C BACKUP/etc/
+
+SINGLE FILE
+[root@rhellab2 ~]# tar -xvf archive.tgz  -C /root/BACKUP/etc/ ./hosts
+./hosts
+
+- /etc/passwd
+cut -f 1 -d: /etc/passwd | sort
+awk -F ":" '{print $1 }' /etc/passwd | sort
+
+- create user
+find / -user rescue -type  f -exec cp -p {} /root/rescuefiles  \;
+

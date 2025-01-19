@@ -28,6 +28,30 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 GROUP INSTALL
 
 [root@rhellab2 ~]# dnf group list
