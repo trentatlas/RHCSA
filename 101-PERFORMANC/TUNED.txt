@@ -1,0 +1,27 @@
+
+
+#dnf install tuned
+
+[root@rhellab2 ~]# tuned-adm [TAB] [TAB]
+ 
+
+
+[root@rhellab2 ~]# tuned-adm active
+Current active profile: virtual-guest
+
+[root@rhellab2 ~]# tuned-adm list
+
+
+#mkdir -p /etc/tuned/aegisdawn
+#vim /etc/tuned/aegisdawn/tuned.conf
+[root@rhellab2 ~]# cat /etc/tuned/aegisdawn/tuned.conf 
+[sysctl]
+vm.swappiness = 73
+
+
+[root@rhellab2 ~]# tuned-adm profile aegisdawn
+[root@rhellab2 ~]# tuned-adm active
+Current active profile: aegisdawn
+[root@rhellab2 ~]# sysctl -a | egrep -i swap
+vm.swappiness = 73
+

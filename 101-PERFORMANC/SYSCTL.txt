@@ -1,0 +1,13 @@
+
+[root@rhellab2 ~]# cat /etc/sysctl.d/10-swappiness.conf 
+vm.swappiness = 10
+
+[root@rhellab2 ~]# systemctl list-unit-files | egrep sysctl
+systemd-sysctl.service                                                    static          -
+
+
+[root@rhellab2 ~]# systemctl restart systemd-sysctl.service
+
+[root@rhellab2 ~]# sysctl -a | wc -l
+1120
+

@@ -1,0 +1,26 @@
+
+[root@rhellab2 html]# egrep -i storage /etc/systemd/journald.conf 
+Storage=auto
+
+- persistent
+- volatile
+- none
+
+#mkdir -p /var/log/journal
+
+
+[root@rhellab2 html]# systemctl list-unit-files | egrep -i journal
+systemd-journal-flush.service                                             static          -
+
+
+#journalctl
+prints entire journal
+
+#journalctl -p err
+Error and higher
+
+#journalctl -f
+last 10 lines
+
+#journalctl -u sshd.service
+

@@ -1,0 +1,65 @@
+
+-- CAT
+
+[root@rhellab2 ~]# systemctl cat  sshd
+# /usr/lib/systemd/system/sshd.service
+[Unit]
+Description=OpenSSH server daemon
+
+
+# cp -p /usr/lib/systemd/system/sshd.service /etc/systemd/system/sleep.service
+# vim /etc/systemd/system/sleep.service
+# systemctl enable sleep.service --now
+ [root@rhellab2 ~]# systemctl status sleep.service
+● sleep.service - SLEEP server daemon
+     Loaded: loaded (/etc/systemd/system/sleep.service; enabled; preset: disabled)
+     Active: active (running) since Mon 2025-01-20 16:33:27 EST; 1min 30s ago
+   Main PID: 5500 (sleep)
+      Tasks: 1 (limit: 48808)
+     Memory: 220.0K
+        CPU: 1ms
+     CGroup: /system.slice/sleep.service
+             └─5500 /usr/bin/sleep infinity
+
+Jan 20 16:33:27 rhellab2.aegisdawn.com systemd[1]: Started SLEEP server daemon.
+
+
+[root@rhellab2 ~]# cat /etc/systemd/system/sleep.service
+[Unit]
+Description=SLEEP server daemon
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/sleep infinity
+Restart=on-failure
+RestartSec=18s
+
+[Install]
+WantedBy=multi-user.target
+
+
+[root@rhellab2 ~]# ps axwu | egrep sleep
+root        5500  0.0  0.0 220952  1016 ?        Ss   16:33   0:00 /usr/bin/sleep infinity
+
+
+[root@rhellab2 ~]# systemctl list-dependencies sleep.service
+sleep.service
+● ├─system.slice
+● └─sysinit.target
+
+
+
+[root@rhellab2 ~]# systemctl list-units | egrep sleep
+  sleep.service                                                                            loaded active running   SLEEP server daemon
+[root@rhellab2 ~]# systemctl list-unit-files | egrep sleep
+sleep.service                                                             enabled         disabled
+sleep.target                                                              static         
+
+
+
+
+
+
+
+[root@rhellab2 ~]# man systemd.directives 
+[root@rhellab2 ~]# 

@@ -1,0 +1,119 @@
+- GROW DISK/VOLUME GROUP
+was
+sdb                        8:16   0  73G  0 disk
+
+before
+sdb                        8:16   0  146G  0 disk
+
+[root@rhellab2 ~]# pvresize /dev/sdb
+  Physical volume "/dev/sdb" changed
+  1 physical volume(s) resized or updated / 0 physical volume(s) not resize
+
+
+[root@rhellab2 ~]# vgdisplay 
+  --- Volume group ---
+  VG Name               DESTROY
+  System ID             
+  Format                lvm2
+  Metadata Areas        1
+  Metadata Sequence No  3
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                1
+  Open LV               1
+  Max PV                0
+  Cur PV                1
+  Act PV                1
+  VG Size               <146.00 GiB
+  PE Size               4.00 MiB
+  Total PE              37375
+  Alloc PE / Size       18432 / 72.00 GiB
+  Free  PE / Size       18943 / <74.00 GiB
+  VG UUID               fRUI23-8v0D-Rgnu-c0Ra-wI0q-2wtI-1mzIQH
+
+
+ -- REMOVE
+[root@rhellab2 ~]# wipefs -a  /dev/DESTROY/DESTROYLV
+/dev/DESTROY/DESTROYLV: 4 bytes were erased at offset 0x00000000 (xfs): 58 46 53 42
+[root@rhellab2 ~]# lvremove DESTROY/DESTROYLV
+Do you really want to remove active logical volume DESTROY/DESTROYLV? [y/n]: y
+  Logical volume "DESTROYLV" successfully removed.
+[root@rhellab2 ~]#
+
+
+
+sdb                        8:16   0  256G  0 disk 
+└─sdb1                     8:17   0  146G  0 part /destroy
+
+
+- gdisk delete partition
+Make sure start sector is the same!!! 2048
+
+#gdisk /dev/sdb
+
+Number  Start (sector)    End (sector)  Size       Code  Name
+   1            2048       306184158   146.0 GiB   8300  Linux filesystem
+
+Command (? for help): d
+Using 1
+
+w [ write ]
+partprobe
+
+
+#gdisk /dev/sdb
+
+Command (? for help): p
+Disk /dev/sdb: 536870912 sectors, 256.0 GiB
+Model: QEMU HARDDISK   
+Sector size (logical/physical): 512/512 bytes
+Disk identifier (GUID): 5CF7139C-D829-4D97-8620-22C893E9E311
+Partition table holds up to 128 entries
+Main partition table begins at sector 2 and ends at sector 33
+First usable sector is 34, last usable sector is 536870878
+Partitions will be aligned on 2048-sector boundaries
+Total free space is 536870845 sectors (256.0 GiB)
+
+Number  Start (sector)    End (sector)  Size       Code  Name
+
+Command (? for help): n
+Partition number (1-128, default 1): 
+First sector (34-536870878, default = 2048) or {+-}size{KMGTP}: 
+Last sector (2048-536870878, default = 536870878) or {+-}size{KMGTP}: +200G
+Current type is 8300 (Linux filesystem)
+Hex code or GUID (L to show codes, Enter = 8300): 
+Changed type of partition to 'Linux filesystem'
+
+Command (? for help): w
+
+Final checks complete. About to write GPT data. THIS WILL OVERWRITE EXISTING
+PARTITIONS!!
+
+Do you want to proceed? (Y/N): y
+OK; writing new GUID partition table (GPT) to /dev/sdb.
+The operation has completed successfully.
+[root@rhellab2 ~]# partprobe 
+Warning: Unable to open /dev/sr0 read-write (Read-only file system).  /dev/sr0 has been opened read-only.
+
+
+#/dev/sdb1                         146G   27G  120G  19% /mnt
+[root@rhellab2 ~]# xfs_growfs /dev/sdb1 
+meta-data=/dev/sdb1              isize=512    agcount=4, agsize=9568191 blks
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=1        finobt=1, sparse=1, rmapbt=0
+         =                       reflink=1    bigtime=1 inobtcount=1 nrext64=0
+data     =                       bsize=4096   blocks=38272763, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
+log      =internal log           bsize=4096   blocks=18687, version=2
+         =                       sectsz=512   sunit=0 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+
+
+/dev/sdb1                         200G   27G  174G  14% /mnt
+[root@rhellab2 ~]# ls -lh /mnt
+total 26G
+-rw-r--r--. 1 root root 26G Jan 20 12:22 xfs.file
+
+===== 

@@ -1,0 +1,59 @@
+
+-- SYSTEMD_EDITOR
+[root@rhellab2 ~]# cat /etc/profile.d/SYSTEMDEDITOR.sh 
+export SYSTEMD_EDITOR=vim
+[root@rhellab2 ~]# 
+
+
+-- journalctl
+
+
+#mkdir /var/log/journal/
+
+[root@rhellab2 ~]# journalctl --system
+[root@rhellab2 ~]# journalctl --user
+
+-- HELP
+
+- systemctl manage systemd UNITS
+
+[root@rhellab2 ~]# systemctl -t help
+Available unit types:
+service
+mount
+swap
+socket
+target
+device
+automount
+timer
+path
+slice
+scope
+
+root@rhellab2 ~]# systemctl -t service
+  UNIT                                                  LOAD   ACTIVE SUB     DESCRIPTION                                                                  
+  atd.service                                           loaded active running Deferred execution scheduler
+  auditd.service                                        loaded active running Security Auditing Service
+  avahi-daemon.service                                  loaded active running Avahi mDNS/DNS-SD Stack
+  chronyd.service                                       loaded active running NTP client/server
+
+......
+.
+.
+
+.
+
+LOAD   = Reflects whether the unit definition was properly loaded.
+ACTIVE = The high-level unit activation state, i.e. generalization of SUB.
+SUB    = The low-level unit activation state, values depend on unit type.
+57 loaded units listed. Pass --all to see loaded but inactive units, too.
+To show all installed unit files use 'systemctl list-unit-files'.
+[root@rhellab2 ~]# systemctl -t service
+  UNIT                                                  LOAD   ACTIVE SUB     DESCRIPTION                                                                  
+  atd.service                                           loaded active running Deferred execution scheduler
+  auditd.service                                        loaded active running Security Auditing Service
+  avahi-daemon.service                                  loaded active running Avahi mDNS/DNS-SD Stack
+  chronyd.service                                       loaded active running NTP client/server
+  crond.service                                         loaded active running Command Scheduler
+
