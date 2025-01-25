@@ -114,3 +114,64 @@ UUID="5bcc8a99-cf06-4e7c-b255-3309ddac9d6d" /FOO	xfs	defaults	0 0
 #findmnt
 #lsof
 
+
+
+
+
+- CHANGE Partition to LVM
+
+alias to LVM
+
+
+===================================================
+Command (m for help): p
+Disk /dev/sdb: 42 GiB, 45097156608 bytes, 88080384 sectors
+Disk model: QEMU HARDDISK   
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xf8c3c685
+
+Device     Boot Start      End  Sectors Size Id Type
+/dev/sdb1        2048 10487807 10485760   5G 83 Linux
+
+Command (m for help): t
+Selected partition 1
+Hex code or alias (type L to list all): lvm
+Changed type of partition 'Linux' to 'Linux LVM'.
+
+Command (m for help): p
+Disk /dev/sdb: 42 GiB, 45097156608 bytes, 88080384 sectors
+Disk model: QEMU HARDDISK   
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xf8c3c685
+
+Device     Boot Start      End  Sectors Size Id Type
+/dev/sdb1        2048 10487807 10485760   5G 8e Linux LVM
+
+Command (m for help): w
+The partition table has been altered.
+Calling ioctl() to re-read partition table.
+Syncing disks.
+
+
+[root@rhellab2 ~]# vgcreate APPVG /dev/sdb1
+  Devices file /dev/sdb is excluded: device is partitioned.
+  WARNING: adding device /dev/sdb1 with idname t10.ATA_QEMU_HARDDISK_QM00003 which is already used for /dev/sdb.
+  Physical volume "/dev/sdb1" successfully created.
+  Volume group "APPVG" successfully created
+[root@rhellab2 ~]# pva
+bash: pva: command not found...
+^C
+[root@rhellab2 ~]# pvs
+  Devices file /dev/sdb is excluded: device is partitioned.
+  PV         VG     Fmt  Attr PSize   PFree  
+  /dev/sdb1  APPVG  lvm2 a--   <5.00g  <5.00g
+
+
+====================================================
+

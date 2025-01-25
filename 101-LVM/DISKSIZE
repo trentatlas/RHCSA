@@ -1,0 +1,18 @@
+
+
+- BYTE 1024 - multiples of 8
+ 
+
+ MEBIBYTE ( Mega Binary BYTE ) 1 MiB - 2^20 BYTES 1,048,576 = ( 1,024 KIBIYTES )
+
+ GIGIBYTE (GiB) 1024 MEBIBYTES ( MiB )
+
+
+https://simple.wikipedia.org/wiki/Gibibyte
+
+root@300:/ISO/REDHAT/810# dd if=rhel-8.10-x86_64-dvd.iso of=/dev/sdc bs=1M conv=notrunc status=progress
+14224982016 bytes (14 GB, 13 GiB) copied, 836 s, 17.0 MB/s 
+13575+0 records in
+13575+0 records out
+14234419200 bytes (14 GB, 13 GiB) copied, 1338.07 s, 10.6 MB/s
+

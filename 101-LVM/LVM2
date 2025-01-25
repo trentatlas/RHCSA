@@ -1,0 +1,34 @@
+
+- EXTENT SIZE
+
+VG property
+default 4MiB
+
+[root@rhellab2 ~]# vgdisplay APPVG
+  --- Volume group ---
+  VG Name               APPVG
+  System ID             
+  Format                lvm2
+  Metadata Areas        1
+  Metadata Sequence No  1
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                0
+  Open LV               0
+  Max PV                0
+  Cur PV                1
+  Act PV                1
+  VG Size               <5.00 GiB
+  PE Size               4.00 MiB
+
+
+
+ Always use -r to resize in lvm!!
+
+ resize2fs - grow ext3/ext4
+ xfs_growfs - grow xfs
+
+  #vgextend APPVG /dev/sdb2
+
+

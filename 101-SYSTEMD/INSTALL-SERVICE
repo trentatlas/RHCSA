@@ -1,0 +1,62 @@
+
+- Service - Standalone
+Service unit
+.service
+A system service.
+
+
+- Target - group of systemd units
+.target
+
+
+
+- Enable custom service
+
+https://access.redhat.com/articles/6318091
+
+1. enable linger
+#loginctl enable-linger aegisdawn
+
+[aegisdawn@rhel95-pkgr ~]$ mkdir -p .config/systemd/user/
+[aegisdawn@rhel95-pkgr ~]$ vim .config/systemd/user/aegisdawn-httpd.service
+[aegisdawn@rhel95-pkgr ~]$ systemctl --user enable  aegisdawn-httpd
+[aegisdawn@rhel95-pkgr ~]$ systemctl --user status  aegisdawn-httpd
+
+
+
+[aegisdawn@rhel95-pkgr ~]$  systemctl --user cat   aegisdawn-httpd
+# /home/aegisdawn/.config/systemd/user/aegisdawn-httpd.service
+[Unit]
+Description=AegisDawn HTTP
+After=network.target
+Wants=network.target
+
+[Service]
+Type=forking
+##Type=notify
+Environment=LANG=C
+##Type=forking
+ExecStart=/opt/aegisdawn/bin/apachectl start
+ExecStop=/opt/aegisdawn/bin/apachectl stop
+Restart=always
+
+[Install]
+WantedBy=default.target
+
+
+
+[aegisdawn@rhel95-pkgr ~]$  systemctl --user status  aegisdawn-httpd
+● aegisdawn-httpd.service - AegisDawn HTTP
+     Loaded: loaded (/home/aegisdawn/.config/systemd/user/aegisdawn-httpd.service; enabled; preset: disabled)
+     Active: active (running) since Sat 2025-01-25 13:44:02 EST; 8min ago
+    Process: 858 ExecStart=/opt/aegisdawn/bin/apachectl start (code=exited, status=0/SUCCESS)
+   Main PID: 861 (httpd)
+      Tasks: 82 (limit: 48919)
+     Memory: 20.6M
+        CPU: 83ms
+     CGroup: /user.slice/user-8080.slice/user@8080.service/app.slice/aegisdawn-httpd.service
+             ├─861 /opt/aegisdawn/bin/httpd -k start
+             ├─862 /opt/aegisdawn/bin/httpd -k start
+             ├─868 /opt/aegisdawn/bin/httpd -k start
+             └─875 /opt/aegisdawn/bin/httpd -k start
+
