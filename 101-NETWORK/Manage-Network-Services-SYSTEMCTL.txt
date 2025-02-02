@@ -1,0 +1,59 @@
+
+The systemctl command might abbreviate (truncate with an ellipsis) unit names, process tree entries, and unit descriptions unless run with the -l option.
+
+-l
+
+Keyword	Description
+loaded 	Unit configuration file has been processed
+active (running) 	Running with one or more continuing processes
+active (exited) 	Successfully completed a one-time configuration
+active (waiting) 	Running but waiting for an event
+inactive 	Not running
+enabled 	Configured to start at boot time
+disabled 	Configured to not start at boot time
+static 	Cannot be enabled, but can be started by an enabled unit automatically
+
+List Unit Files
+
+systemctl
+systemctl --type=service
+systemctl is-active
+systemctl is-enabled
+
+All active
+systemctl list-units --type=service
+systemctl list-untis --type=service --all
+
+All active and disabled
+systemctl list-unit-files --type=service
+
+
+FAILED
+systemctl --failed --type=service
+
+
+DEPENDCIES
+systemctl list-depencies sshd
+
+MASK
+systemctl mask iptables
+
+SUMMARY
+Command	Task
+systemctl status UNIT 	View detailed information about a unit state.
+systemctl stop UNIT 	Stop a service on a running system.
+systemctl start UNIT 	Start a service on a running system.
+systemctl restart UNIT 	Restart a service on a running system.
+systemctl reload UNIT 	Reload the configuration file of a running service.
+systemctl mask UNIT 	Completely disable a service from being started, both manually and at boot.
+systemctl unmask UNIT 	Unmask a service and make it available.
+systemctl enable UNIT 	Configure a service to start at boot time.
+systemctl disable UNIT 	Disable a service from starting at boot time.
+systemctl list-dependencies UNIT 	List units that are required by the specified unit.
+
+
+
+
+#systemctl status sshd.service
+
+

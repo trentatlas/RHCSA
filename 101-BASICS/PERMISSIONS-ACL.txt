@@ -1,0 +1,28 @@
+
+
+- setfacl
+  -R, --recursive
+
+Before:::
+ls -lh
+drwxr-x---. 2 root UNIVERSITY  6 Feb  1 18:02 UNIVERSITY
+
+After:::
+setfacl -R -m g:UNIVERSITY:rwx UNIVERSITY/
+
+
+drwxrwx---+  2 root UNIVERSITY    6 Feb  1 19:39 UNIVERSITY
+
+[root@rhellab2 opt]# getfacl UNIVERSITY/
+# file: UNIVERSITY/
+# owner: root
+# group: UNIVERSITY
+user::rwx
+group::r-x
+group:UNIVERSITY:rwx
+mask::rwx
+other::---
+
+
+Inherit
+setfacl -R -m d:g:STAFF:rwx STAFF-RESOURCES

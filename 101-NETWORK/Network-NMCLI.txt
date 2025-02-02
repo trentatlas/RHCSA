@@ -1,0 +1,65 @@
+
+
+nmcli dev status
+
+nmcli con show
+
+
+ip addr show eth0
+
+Disabling the Predictable Network Interface naming scheme with the net.ifnames=0 kernel option is not recommended.
+
+-IPv4 networking information is obtained dynamically from DHCP.
+-IPv6 networking information is obtained from router advertisements on the local link.
+
+nmcli con add con-name eth1 type ethernet ifname eth1
+
+
+- A static IPv4 address of 192.0.2.7/24 and an IPv4 gateway router of 192.0.2.1.
+- A static IPv6 address of 2001:db8:0:1::c000:207/64 and an IPv6 gateway router of 2001:db8:0:1::1.
+
+
+[root@host ~]# nmcli con add con-name static-eth1 type ethernet ifname eth1 \
+ ipv6.address 2001:db8:0:1::c000:207/64 ipv6.gateway 2001:db8:0:1::1 \
+ ipv4.address 192.0.2.7/24 ipv4.gateway 192.0.2.1
+
+
+
+ ~]# nmcli con up static-eth1
+
+  -- DISCONNECT
+ ~]# nmcli dev dis eth1
+
+ -- SHOW
+ ~]# nmcli con show static-eth1
+
+
+
+[root@host ~]# nmcli con mod static-eth3 ipv4.address 192.0.2.2/24 \
+ ipv4.gateway 192.0.2.254
+
+
+[root@host ~]# nmcli con mod static-eth3 ipv6.address 2001:db8:0:1::a00:1/64 \
+ ipv6.gateway 2001:db8:0:1::1
+
+
+
+
+
+============================
+
+Summary of Commands
+
+Command	Purpose
+nmcli dev status 	Show the NetworkManager status of all network interfaces.
+nmcli con show 	List all NetworkManager connections.
+nmcli con show connection 	List the current settings for connection.
+nmcli con add con-name connection [OPTIONS] 	Add a new connection named connection.
+nmcli con mod connection [OPTIONS] 	Modify the connection named connection.
+nmcli con reload 	Have NetworkManager reread the configuration files. This is useful after they have been edited by hand.
+nmcli con up connection 	Activate the connection named connection.
+nmcli dev dis device 	Deactivate and disconnect the current connection on the device network interface.
+nmcli con del connection 	Delete connection and its configuration file.
+nmcli gen permissions 	List your current permissions to access NetworkManager.
+ip addr show 	Show the current network interface address configuration.
+

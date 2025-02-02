@@ -1,0 +1,46 @@
+https://www.redhat.com/en/blog/linux-file-permissions-explained
+
+
+-- d Directory 
+   c
+
+4 ( read )
+2 ( write )
+1 ( execute )
+
+
+   
+-- OWNING USER   r w x
+
+-- OWNING GROUP
+
+-- OTHER
+
+$newgrp STAFF
+$chgrp  [ CHANGE GROUP ]
+
+
+SUID is the special permission for the user access level and always executes as the user who owns the file, no matter who is passing the command.
+
+SGID allows a file to be executed as the group owner of the file; a file created in the directory has its group ownership set to the directory owner. This is helpful for directories used collaboratively among different members of a group because all members can access and execute new files
+
+
+The "sticky bit" is a directory-level special permission that restricts file deletion, meaning only the file owner can remove a file within the directory.
+
+
+https://www.redhat.com/en/blog/suid-sgid-sticky-bit
+
+SUID
+$ ls -l /bin/passwd
+-rwsr-xr-x. 1 root root 32648 Aug 10  2021 /bin/passwd
+
+Note the s where x would usually indicate execute permissions for the user.
+
+
+============
+
+X 	special execute 	Execute permissions to a directory, or execute permissions to a file if at least one of the execute bits is set.
+
+chmod -R g+rwX demodir
+
+recursively sets read and write access on the demodir directory and all its children for their group owner, but applies group execute permissions only to directories and files where execute permission is already set for user, group, or other.

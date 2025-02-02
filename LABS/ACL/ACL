@@ -1,0 +1,13 @@
+
+setup default UMASK 027
+/etc/skel
+
+
+so STUDENTS and STAFF and access /opt/UNIVERSITY
+
+setfacl -R -m  g:UNIVERSITY:rwx UNIVERSITY/
+
+
+
+d - write new files and directories
+setfacl -R -m d:g:STAFF:rwx STAFF-RESOURCES
