@@ -1,0 +1,70 @@
+
+https://www.gnu.org/software/tar/manual/
+
+https://www.redhat.com/en/blog/taming-tar-command
+
+https://www.tecmint.com/tar-command-examples-linux/
+
+--selinux
+--xattrs
+
+
+-c - Create the archive
+-v - Show the process verbosely
+
+-j, --bzip2
+              Filter the archive through bzip2(1).
+
+-J, --xz
+              Filter the archive through xz
+
+-z, --gzip, --gunzip, --ungzip
+              Filter the archive through gzip(1).
+
+-Z, --compress, --uncompress
+              Filter the archive through compress(1).
+
+-f - Name the archive
+-f ARCHIVE.tar
+
+HAVE TO USE -f last because of NAME::
+
+trent@miniatlas:~/BACKUP$ tar -cvjf DOCS.tar.bz2 /home/trent/Documents/
+
+trent@miniatlas:~/BACKUP$ tar -cvJf DOCS.tar.xz /home/trent/Documents/
+
+trent@miniatlas:~/BACKUP$ tar -cvzf DOCS.tar.gz /home/trent/Documents/
+atlas:~/BACKUP$ file *
+DOCS.tar.bz2: bzip2 compressed data, block size = 900k
+DOCS.tar.gz:  gzip compressed data, from Unix, original size modulo 2^32 1853440
+DOCS.tar.xz:  XZ compressed data, checksum CRC64
+
+trent@miniatlas:~/BACKUP$ tar -cvzf RFC2616.tar.gz /home/trent/Documents2/rfc2616.txt 
+tar: Removing leading `/' from member names
+/home/trent/Documents2/rfc2616.txt
+
+
+=== RESTORE ===
+
+1.)
+tar -xvf DOCS.tar.xz 
+trent@miniatlas:~/BACKUP$ ls -lh home/trent/Documents/
+total 8.0K
+drwxrwxr-x 2 trent trent 4.0K Jan  3 13:19 Pinnacle
+drwxr-xr-x 3 trent trent 4.0K Jan  3 13:51 podman
+
+
+2.) 
+
+trent@miniatlas:~$ pwd
+/home/trent
+
+trent@miniatlas:~$ tar -xvf DOCS.tar.xz --strip-components=2
+
+
+trent@miniatlas:~$ ls -lh Documents
+total 8.0K
+drwxr-x--- 2 trent trent 4.0K Jan  3 13:19 Pinnacle
+drwxr-x--- 3 trent trent 4.0K Jan  3 13:51 podman
+
+
