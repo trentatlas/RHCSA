@@ -1,0 +1,65 @@
+
+-> Boolens
+SELINUX Behavior Optional
+Change the way how SELINUX reacts to cases.
+
+on/ off
+
+-> getsebool
+[root@rhellab1 ~]# getsebool -a | egrep ftp
+ftpd_anon_write --> off
+ftpd_connect_all_unreserved --> off
+ftpd_connect_db --> off
+ftpd_full_access --> off
+ftpd_use_cifs --> off
+ftpd_use_fusefs --> off
+ftpd_use_nfs --> off
+ftpd_use_passive_mode --> off
+httpd_can_connect_ftp --> off
+httpd_enable_ftp_server --> off
+tftp_anon_write --> off
+tftp_home_dir --> off
+[root@rhellab1 ~]# 
+
+
+[root@rhellab1 ~]# getsebool -a | egrep http | wc -l
+47
+[root@rhellab1 ~]# getsebool -a | wc -l
+358
+[root@rhellab1 ~]# 
+
+[root@rhellab1 ~]# semanage boolean -l | egrep ftp
+ftpd_anon_write                (off  ,  off)  Allow ftpd to anon write
+ftpd_connect_all_unreserved    (off  ,  off)  Allow ftpd to connect all unreserved
+ftpd_connect_db                (off  ,  off)  Allow ftpd to connect db
+ftpd_full_access               (off  ,  off)  Allow ftpd to full access
+ftpd_use_cifs                  (off  ,  off)  Allow ftpd to use cifs
+ftpd_use_fusefs                (off  ,  off)  Allow ftpd to use fusefs
+ftpd_use_nfs                   (off  ,  off)  Allow ftpd to use nfs
+ftpd_use_passive_mode          (off  ,  off)  Allow ftpd to use passive mode
+httpd_can_connect_ftp          (off  ,  off)  Allow httpd to can connect ftp
+httpd_enable_ftp_server        (off  ,  off)  Allow httpd to enable ftp server
+tftp_anon_write                (off  ,  off)  Allow tftp to anon write
+tftp_home_dir                  (off  ,  off)  Allow tftp to home dir
+[root@rhellab1 ~]# semanage boolean -l | wc -l
+360
+
+ftpd_use_nfs                   (off  ,  off)  Allow ftpd to use nfs
+
+[root@rhellab1 ~]# sesearch -b ftpd_use_nfs -A
+allow ftpd_t nfs_t:dir { add_name getattr ioctl lock open read remove_name search write }; [ ftpd_anon_write && ftpd_use_nfs ]:True
+allow ftpd_t nfs_t:dir { getattr ioctl lock open read search }; [ ftpd_use_nfs ]:True
+allow ftpd_t nfs_t:dir { getattr ioctl lock open read search }; [ ftpd_use_nfs ]:True
+allow ftpd_t nfs_t:dir { getattr open search }; [ ftpd_use_nfs ]:True
+allow ftpd_t nfs_t:dir { getattr open search }; [ ftpd_use_nfs ]:True
+allow ftpd_t nfs_t:file { append create getattr ioctl link lock open read rename setattr unlink watch watch_reads write }; [ ftpd_anon_write && ftpd_use_nfs ]:True
+allow ftpd_t nfs_t:file { getattr ioctl lock open read }; [ ftpd_use_nfs ]:True
+allow ftpd_t nfs_t:lnk_file { getattr read }; [ ftpd_use_nfs ]:True
+[root@rhellab1 ~]# 
+
+[root@rhellab1 ~]# semanage boolean -l | egrep ftpd_use_nfs
+ftpd_use_nfs                   (off  ,  off)  Allow ftpd to use nfs
+[root@rhellab1 ~]# setsebool -P ftpd_use_nfs on
+[root@rhellab1 ~]# semanage boolean -l | egrep ftpd_use_nfs
+ftpd_use_nfs                   (on   ,   on)  Allow ftpd to use nfs
+[root@rhellab1 ~]#
