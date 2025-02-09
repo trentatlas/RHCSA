@@ -1,0 +1,12 @@
+
+
+LABEL crond_t
+
+[root@rhellab1 html]# ps -Zauwx | egrep crond
+system_u:system_r:crond_t:s0-s0:c0.c1023 root 1456 0.0  0.0  4668  1516 ?        Ss   Feb08   0:00 /usr/sbin/atd -f
+system_u:system_r:crond_t:s0-s0:c0.c1023 root 1457 0.0  0.0  8544  3624 ?        Ss   Feb08   0:00 /usr/sbin/crond -n
+
+LABEL system_cron_spool_t
+[root@rhellab1 html]# ls -lZ /etc/crontab 
+-rw-r--r--. 1 root root system_u:object_r:system_cron_spool_t:s0 451 Mar 23  2022 /etc/crontab
+[root@rhellab1 html]#

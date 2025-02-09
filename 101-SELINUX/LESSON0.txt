@@ -1,0 +1,85 @@
+
+
+-> Context Label
+Port/FILE
+
+
+
+[root@rhellab1 html]# ps -Zauwx | egrep http
+system_u:system_r:httpd_t:s0    root       31845  0.4  0.1  22072 15204 ?        Ss   07:04   0:00 /usr/sbin/httpd -DFOREGROUND
+system_u:system_r:httpd_t:s0    apache     31846  0.0  0.0  23532  8036 ?        S    07:04   0:00 /usr/sbin/httpd -DFOREGROUND
+system_u:system_r:httpd_t:s0    apache     31847  0.0  0.1 1671056 11740 ?       Sl   07:04   0:00 /usr/sbin/httpd -DFOREGROUND
+system_u:system_r:httpd_t:s0    apache     31848  0.0  0.1 1539920 11740 ?       Sl   07:04   0:00 /usr/sbin/httpd -DFOREGROUND
+system_u:system_r:httpd_t:s0    apache     31849  0.0  0.1 1539920 11740 ?       Sl   07:04   0:00 /usr/sbin/httpd -DFOREGROUND
+
+[root@rhellab1 ~]# ls -ldZ /var/www/
+drwxr-xr-x. 4 root root system_u:object_r:httpd_sys_content_t:s0 33 Feb  9 07:00 /var/www/
+[root@rhellab1 ~]# ls -ldZ /var/www/html/
+drwxr-xr-x. 2 root root system_u:object_r:httpd_sys_content_t:s0 6 Jul 20  2023 /var/www/html/
+[root@rhellab1 ~]#
+
+
+[root@rhellab1 html]# ls -lZ /etc/hosts
+-rw-r--r--. 1 root root system_u:object_r:net_conf_t:s0 250 Feb  8 16:01 /etc/hosts
+
+[root@rhellab1 html]# getfattr -m security.selinux -d /var/www/html/
+getfattr: Removing leading '/' from absolute path names
+# file: var/www/html/
+security.selinux="system_u:object_r:httpd_sys_content_t:s0"
+
+[root@rhellab1 html]# 
+
+
+
+
+-> TOOLS
+[root@rhellab1 html]# seinfo 
+Statistics for policy file: /sys/fs/selinux/policy
+Policy Version:             33 (MLS enabled)
+Target Policy:              selinux
+Handle unknown classes:     allow
+  Classes:             135    Permissions:         457
+  Sensitivities:         1    Categories:         1024
+  Types:              5135    Attributes:          259
+  Users:                 8    Roles:                15
+  Booleans:            358    Cond. Expr.:         391
+  Allow:             65472    Neverallow:            0
+  Auditallow:          172    Dontaudit:          8649
+  Type_trans:       267814    Type_change:          94
+  Type_member:          37    Range_trans:        6164
+  Role allow:           40    Role_trans:          419
+  Constraints:          70    Validatetrans:         0
+  MLS Constrain:        72    MLS Val. Tran:         0
+  Permissives:           3    Polcap:                6
+  Defaults:              7    Typebounds:            0
+  Allowxperm:            0    Neverallowxperm:       0
+  Auditallowxperm:       0    Dontauditxperm:        0
+  Ibendportcon:          0    Ibpkeycon:             0
+  Initial SIDs:         27    Fs_use:               35
+  Genfscon:            109    Portcon:             665
+  Netifcon:              0    Nodecon:               0
+[root@rhellab1 html]# 
+
+
+
+[root@rhellab1 html]# setenforce 
+usage:  setenforce [ Enforcing | Permissive | 1 | 0 ]
+[root@rhellab1 html]# setenforce 0
+[root@rhellab1 html]# getenforce 
+Permissive
+[root@rhellab1 html]# setenforce 1
+[root@rhellab1 html]# getenforce 
+Enforcing
+[root@rhellab1 html]# sestatus
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Memory protection checking:     actual (secure)
+Max kernel policy version:      33
+[root@rhellab1 html]# 
+

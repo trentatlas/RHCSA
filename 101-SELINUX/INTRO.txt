@@ -6,6 +6,7 @@ Sander van Vugt
 
 -> Packages
 
+[root@rhellab1 html]# dnf install setools-console
 [root@rhellab1 ~]# dnf install policycoreutils setroubleshoot setroubleshoot-server container-selinux selinux-policy
 
 -> STATUS
