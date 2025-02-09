@@ -1,0 +1,31 @@
+
+
+O'REILLY
+Mastering Security-Enhanced Linux (SELinux)
+Sander van Vugt
+
+-> Packages
+
+[root@rhellab1 ~]# dnf install policycoreutils setroubleshoot setroubleshoot-server container-selinux selinux-policy
+
+-> STATUS
+
+[root@rhellab1 ~]# sestatus
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Memory protection checking:     actual (secure)
+Max kernel policy version:      33
+[root@rhellab1 ~]# 
+
+
+- RELABEL
+[root@rhellab1 ~]# fixfiles -F onboot
+System will relabel on next boot
+[root@rhellab1 ~]# 
+
