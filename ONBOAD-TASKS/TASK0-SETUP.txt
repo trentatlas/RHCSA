@@ -1,0 +1,187 @@
+> man 
+mkdir -p /root/LAB1/man
+mkdir -p /root/LAB1/ethernet
+
+mkdir -p /root/.local/bin
+mkdir -p /root/bin
+
+> SINGLE USER MODE
+ - FIX /etc/fstab
+ - CHANGE root PASSWORD
+ - /.autorelabel
+
+
+> nmcli
+nmcli connection show lo >> LAB1/ethernet/lo.out
+
+egrep "ipv4|connection.id" LAB1/ethernet/lo.out
+
+nmcli connection add con-name LAB1 connection.id enp8s0 ipv4.method manual ipv4.dns 1.1.1.1 ipv4.dns-search aegisdawn.com ipv4.addresses 192.168.3.101/24 ipv4.gateway 192.168.3.1 type ethernet
+
+nmcli connection reload LAB1
+
+> firewalld
+firewall-cmd --get-default-zone
+firewall-cmd --list-services --block
+
+firewall-cmd --list-services --zone=block
+firewall-cmd --list-services --zone=drop
+
+firewall-cmd --zone=drop --change-interface=enp8s0 --permanent
+firewall-cmd --reload
+
+firewall-cmd --list-services --zone=drop
+firewall-cmd --add-service=ssh --zone=drop --permanent
+firewall-cmd --reload
+firewall-cmd --list-services --zone=drop
+firewall-cmd --add-protocol=icmp --zone=drop --permanent
+firewall-cmd --reload
+firewall-cmd --list-services --zone=drop
+
+firewall-cmd --add-service=cockpit --zone=drop --permanent
+firewall-cmd --reload
+
+[root@rhellab1 ~]# firewall-cmd --list-services --zone=drop
+cockpit ssh
+
+[root@rhellab1 ~]# firewall-cmd --list-protocols --zone=drop
+icmp
+
+[root@rhellab1 ~]# firewall-cmd --get-services
+RH-Satellite-6 RH-Satellite-6-capsule
+
+[root@rhellab1 ~]# firewall-cmd --info-service=http
+http
+  ports: 80/tcp
+  protocols: 
+  source-ports: 
+  modules: 
+  destination: 
+  includes: 
+  helpers: 
+
+
+
+> DISK
+fdisk /dev/sda
+partprobe
+pvcreate /dev/sda4
+vgcreate ISOVG /dev/sda4
+
+lvcreate -n ISOLV -L +11G ISOVG
+mkfs.xfs -L XFSISO /dev/ISOVG/ISOLV
+
+vim /etc/fstab
+systemctl daemon-reload
+mount -a
+mkdir -p /ISO
+mount -a
+
+REPO
+dd if=/dev/sr0 of=/ISO/rhel93.iso bs=1M status=progres
+
+cd /etc/yum.repos.d/
+ls
+dnf config-manager --add-repo /REPO/BaseOS
+dnf config-manager --add-repo /REPO/AppStream
+dnf config-manager --add-repo http://bmf/pub/93/LATESTBaseOS
+d;nf config-manager --add-repo http://bmf/pub/93/LATESTAppStream
+
+
+
+ls -l /etc/pki/rpm-gpg/
+[root@rhellab1 ~]# cat /etc/yum.repos.d/AppStream.repo 
+[AppStream]
+name=created by dnf config-manager from file:///REPO/AppStream
+baseurl=file:///REPO/AppStream
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+
+
+> KERNEL
+https://www.kernel.org/doc/html/v5.14/admin-guide/kernel-parameters.html
+
+grubby --update-kernel ALL --remove-args "rhgb"
+grubby --update-kernel ALL --remove-args "quiet"
+
+grubby --update-kernel ALL --remove-args "crashkernel=1G-4G:192M,4G-64G:256M,64G-:512M"
+
+grubby --update-kernel ALL --args audit=1
+grubby --update-kernel ALL --args clocksource=tsc
+
+[root@rhellab1 ~]# cat /etc/default/grub 
+GRUB_TIMEOUT=18
+GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
+GRUB_DEFAULT=saved
+GRUB_DISABLE_SUBMENU=true
+GRUB_TERMINAL_OUTPUT="console"
+GRUB_CMDLINE_LINUX="resume=/dev/mapper/ROOTVG-swap rd.lvm.lv=ROOTVG/root rd.lvm.lv=ROOTVG/swap audit=1 clocksource=tsc"
+GRUB_DISABLE_RECOVERY="true"
+GRUB_ENABLE_BLSCFG=true
+
+
+
+grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
+
+
+> PACKAGES
+dnf update podman kernel-doc kernel-headers kernel-devel buildah kernel grub2-efi grub2-tools firewalld kernel-tools glibc NetworkManager
+
+> TIME
+dnf install chrony
+
+[root@rhellab1 ~]# systemctl enable chronyd --now
+[root@rhellab1 ~]# systemctl status  chronyd
+● chronyd.service - NTP client/server
+     Loaded: loaded (/usr/lib/systemd/system/chronyd.service; enabled; preset: enabled)
+     Active: active (running) 
+
+
+[root@rhellab1 ~]# timedatectl list-timezones
+
+[root@rhellab1 ~]# timedatectl set-timezone America/Knox_IN
+[root@rhellab1 ~]# date
+Sat Feb  8 06:53:47 PM CST 2025
+
+- /etc/chrony.conf
+
+pool tick.usno.navy.mil iburst minpoll 4 maxpoll 8 xleave
+pool tock.usno.navy.mil iburst minpoll 4 maxpoll 8 xleave
+
+sched_priority 99 -> REAL TIME
+
+
+
+> SYSTEMD LEGACY
+chmod 754 /etc/rc.d/rc.local
+systemctl list-unit-files | egrep rc
+
+[root@rhellab1 ~]# cat /etc/rc.d/rc.local
+#!/bin/bash
+export PATH=/root/.local/bin:/root/bin:/usr/share/Modules/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+
+umask 027
+touch /var/lock/subsys/local
+
+date > /tmp/rc-boot-date
+
+
+> SYSTEMD
+
+- JournalD
+mkdir -p /var/log/journal
+[root@rhellab1 ~]# systemctl restart systemd-journald.service
+[root@rhellab1 ~]# systemctl restart systemd-journal-flush.service
+[root@rhellab1 ~]# ls -la  /var/log/journal
+total 4
+drwxr-xr-x.  3 root root   46 Feb  8 19:01 .
+drwxr-xr-x. 16 root root 4096 Feb  8 19:00 ..
+drwxr-xr-x.  2 root root   28 Feb  8 19:01 90d044e9fc6c486e9acaeae1deea37f6
+
+
+systemctl enable cockpit.socket --now
+systemctl status cockpit
+systemctl disable kdump
+systemctl mask kdump
+

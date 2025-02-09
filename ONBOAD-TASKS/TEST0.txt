@@ -1,5 +1,0 @@
-
-> SINGLE USER MODE
- - FIX /etc/fstab
- - CHANGE root PASSWORD
- - /.autorelabel
