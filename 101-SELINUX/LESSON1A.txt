@@ -1,0 +1,28 @@
+[rescue@rhellab1 ~]$ man semanage-fcontext
+
+-> SEMANAGE
+public_content_t [ GENERIC allow access to httpd ftp etc ... and more ]
+
+mkdir -p /files
+ls -ldZ /files
+touch /files/files{1..10}
+ls -lZ /files
+semanage fcontext -a -t public_content_t "/files(/.*)?"   [ REGEX ALL ]
+restorecon -Rv /files
+
+ls -l /etc/selinux/targeted/contexts/files
+cat file_contexts.local -> ADDED to policy
+
+-> CHCON
+chcon [ TEMP!!! not permanent ] 
+
+touch /tmp/HTTPD_FILE_1
+chcon -t httpd_sys_content_t /tmp/FILE
+ls -lZ /tmp/FILE
+restorecon -Rv /tmp
+ls -lZ /tmp/FILE /etc/hosts
+chcon -t httpd_sys_content_t /etc/hosts
+restorecon -v /etc/hosts
+
+
+

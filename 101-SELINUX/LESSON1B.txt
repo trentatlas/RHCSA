@@ -1,0 +1,100 @@
+
+> PORTS
+NO RESTORECON - ports don't have inodes!
+
+#semanage port -a -t http_port_t -p tcp 82
+
+
+SSH 
+[root@rhellab1 ~]# cat /etc/ssh/sshd_config | more
+# If you want to change the port on a SELinux system, you have to tell
+# SELinux about this change.
+# semanage port -a -t ssh_port_t -p tcp #PORTNUMBER
+#
+Port 22
+
+
+[rescue@rhellab1 ~]$ man semanage-port
+
+EXAMPLE
+       List all port definitions
+       # semanage port -l
+       Allow Apache to listen on tcp port 81 (i.e. assign tcp port 81 label http_port_t, which apache is allowed to listen on)
+       # semanage port -a -t http_port_t -p tcp 81
+       Allow sshd to listen on tcp port 8991 (i.e. assign tcp port 8991 label ssh_port_t, which sshd is allowed to listen on)
+       # semanage port -a -t ssh_port_t -p tcp 8991
+
+
+#semanage port -a -t ssh_port_t -p tcp 443
+Value Error tcp/443 already defined
+
+       -m, --modify
+              Modify a record of the specified object type
+
+#semanage port -m -t ssh_port_t -p tcp 443
+
+[root@rhellab1 ~]# firewall-cmd --add-service=https --zone=drop --permanent
+success
+[root@rhellab1 ~]# firewall-cmd --reload
+success
+[root@rhellab1 ~]# semanage port -a -t ssh_port_t -p tcp 443
+ValueError: Port tcp/443 already defined
+[root@rhellab1 ~]# semanage port -m -t ssh_port_t -p tcp 443
+[root@rhellab1 ~]# 
+
+
+[root@rhellab1 ~]# systemctl restart sshd
+Job for sshd.service failed because the control process exited with error code.
+See "systemctl status sshd.service" and "journalctl -xeu sshd.service" for details.
+[root@rhellab1 ~]# systemctl status sshd.service
+● sshd.service - OpenSSH server daemon
+     Loaded: loaded (/usr/lib/systemd/system/sshd.service; enabled; preset: enabled)
+     Active: activating (auto-restart) (Result: exit-code) since Sun 2025-02-09 09:43:36 CST; 11s ago
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 7845 ExecStart=/usr/sbin/sshd -D $OPTIONS (code=exited, status=255/EXCEPTION)
+   Main PID: 7845 (code=exited, status=255/EXCEPTION)
+        CPU: 7ms
+
+Feb 09 09:43:36 rhellab1.aegisdawn.com sshd[7845]: fatal: Cannot bind any address.
+Feb 09 09:43:36 rhellab1.aegisdawn.com systemd[1]: sshd.service: Main process exited, code=exited, status=255/EXCEPTION
+Feb 09 09:43:36 rhellab1.aegisdawn.com systemd[1]: sshd.service: Failed with result 'exit-code'.
+Feb 09 09:43:36 rhellab1.aegisdawn.com systemd[1]: Failed to start OpenSSH server daemon.
+[root@rhellab1 ~]# 
+
+[root@rhellab1 ~]# ss -plunt
+Netid     State      Recv-Q     Send-Q         Local Address:Port          Peer Address:Port    Process                                                                                                      
+udp       UNCONN     0          0                  127.0.0.1:323                0.0.0.0:*        users:(("chronyd",pid=1136,fd=5))                                                                           
+udp       UNCONN     0          0                      [::1]:323                   [::]:*        users:(("chronyd",pid=1136,fd=6))                                                                           
+tcp       LISTEN     0          5                  127.0.0.1:4330               0.0.0.0:*        users:(("pmlogger",pid=2406,fd=7))                                                                          
+tcp       LISTEN     0          5                  127.0.0.1:44321              0.0.0.0:*        users:(("pmcd",pid=1799,fd=0))                                                                              
+tcp       LISTEN     0          5                      [::1]:4330                  [::]:*        users:(("pmlogger",pid=2406,fd=8))                                                                          
+tcp       LISTEN     0          5                      [::1]:44321                 [::]:*        users:(("pmcd",pid=1799,fd=3))                                                                              
+tcp       LISTEN     0          4096                       *:9090                     *:*        users:(("systemd",pid=1,fd=49))                                                                             
+tcp       LISTEN     0          511                        *:80                       *:*        users:(("httpd",pid=1520,fd=4),("httpd",pid=1519,fd=4),("httpd",pid=1518,fd=4),("httpd",pid=1448,fd=4))     
+tcp       LISTEN     0          511                        *:443                      *:*        users:(("httpd",pid=1520,fd=6),("httpd",pid=1519,fd=6),("httpd",pid=1518,fd=6),("httpd",pid=1448,fd=6))     
+[root@rhellab1 ~]# systemctl stop httpd
+[root@rhellab1 ~]# systemctl mask  httpd
+Created symlink /etc/systemd/system/httpd.service → /dev/null.
+[root@rhellab1 ~]# 
+[root@rhellab1 ~]# ss -plunt
+Netid            State             Recv-Q             Send-Q                         Local Address:Port                          Peer Address:Port            Process                                        
+udp              UNCONN            0                  0                                  127.0.0.1:323                                0.0.0.0:*                users:(("chronyd",pid=1136,fd=5))             
+udp              UNCONN            0                  0                                      [::1]:323                                   [::]:*                users:(("chronyd",pid=1136,fd=6))             
+tcp              LISTEN            0                  5                                  127.0.0.1:4330                               0.0.0.0:*                users:(("pmlogger",pid=2406,fd=7))            
+tcp              LISTEN            0                  5                                  127.0.0.1:44321                              0.0.0.0:*                users:(("pmcd",pid=1799,fd=0))                
+tcp              LISTEN            0                  128                                  0.0.0.0:443                                0.0.0.0:*                users:(("sshd",pid=7950,fd=3))                
+tcp              LISTEN            0                  5                                      [::1]:4330                                  [::]:*                users:(("pmlogger",pid=2406,fd=8))            
+tcp              LISTEN            0                  5                                      [::1]:44321                                 [::]:*                users:(("pmcd",pid=1799,fd=3))                
+tcp              LISTEN            0                  4096                                       *:9090                                     *:*                users:(("systemd",pid=1,fd=71))               
+tcp              LISTEN            0                  128                                     [::]:443                                   [::]:*                users:(("sshd",pid=7950,fd=4))                
+[root@rhellab1 ~]# 
+
+
+
+trent@300:~$ ssh -l rescue -p 443 192.168.3.101
+rescue@192.168.3.101's password: 
+Web console: https://rhellab1.aegisdawn.com:9090/ or https://192.168.3.101:9090/
+
+Last login: Sun Feb  9 09:22:42 2025 from 192.168.3.30
+[rescue@rhellab1 ~]$
