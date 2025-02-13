@@ -1,4 +1,44 @@
 
--> 
+-> RESCUE SYSTEM
 
-->
+-> SETUP DNF/YUM repo
+LOCAL and REMOTE
+
+-> INSTALL CHRONY and CHANGE TZ to 
+
+timedatectl list-timezones
+US/Arizona
+America/Knox_IN
+GMT+0
+
+-> Create VG
+
+-> Create LV in VG
+
+-> create ext4 file system
+
+-> create xfs file system
+
+-> Apache HTTP
+w/ firewall HTTP/HTTPS
+
+
+-> Install
+GNOME
+Container Tools
+Network File System Client
+
+-> GUI 
+set graphical login
+
+
+- NFS
+remove /home /opt
+mount /opt /home from rhellab1
+
+
+
+-> BASH SCRIPTING!!!
+
+
+

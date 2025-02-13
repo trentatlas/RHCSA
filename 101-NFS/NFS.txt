@@ -1,0 +1,80 @@
+
+->  INSTALL
+
+[root@rhellab1 ~]# dnf group list --hidden | egrep -i network
+   Network File System Client
+
+[root@rhellab1 ~]# dnf group install "Network File System Client"
+
+
+--> Configure Server
+
+nfs-utils rpcbind
+
+[root@rhellab1 ~]# systemctl enable nfs-server.service --now
+Created symlink /etc/systemd/system/multi-user.target.wants/nfs-server.service → /usr/lib/systemd/system/nfs-server.service.
+[root@rhellab1 ~]# 
+
+
+[root@rhellab1 ~]# systemctl list-unit-files | egrep -i nfs
+proc-fs-nfsd.mount                         static          -
+var-lib-nfs-rpc_pipefs.mount               static          -
+nfs-blkmap.service                         disabled        disabled
+nfs-idmapd.service                         static          -
+nfs-mountd.service                         static          -
+nfs-server.service                         disabled        disabled
+nfs-utils.service                          static          -
+nfsdcld.service                            static          -
+nfs-client.target                          enabled         disabled
+'
+[root@rhellab1 ~]# systemctl list-unit-files | egrep -i rpc
+var-lib-nfs-rpc_pipefs.mount               static          -
+auth-rpcgss-module.service                 static          -
+rpc-gssd.service                           static          -
+rpc-statd-notify.service                   static          -
+rpc-statd.service                          static          -
+rpcbind.service                            enabled         enabled
+rpcbind.socket                             enabled         enabled
+rpc_pipefs.target                          static          -
+rpcbind.target                             static          -
+
+
+-> Firewall
+[root@rhellab1 ~]# firewall-cmd --get-services
+
+nfs nfs3 rpc-bind mountd
+
+
+[root@rhellab1 ~]# firewall-cmd --list-services --zone=drop
+cockpit http https ssh
+[root@rhellab1 ~]# firewall-cmd --list-protocols --zone=drop
+icmp
+[root@rhellab1 ~]#  firewall-cmd --add-service=nfs --zone=drop --permanent
+success
+[root@rhellab1 ~]#  firewall-cmd --add-service=nfs3 --zone=drop --permanent
+success
+[root@rhellab1 ~]#  firewall-cmd --add-service=rpc-bind --zone=drop --permanent
+success
+[root@rhellab1 ~]#  firewall-cmd --add-service=mountd --zone=drop --permanent
+success
+[root@rhellab1 ~]#  firewall-cmd --reload
+success
+[root@rhellab1 ~]# firewall-cmd --list-services --zone=drop
+cockpit http https mountd nfs nfs3 rpc-bind ssh
+[root@rhellab1 ~]# 
+
+
+-> EXPORT
+[root@rhellab1 ~]# cat /etc/exports
+/home	*(rw,no_root_squash)
+/opt	*(rw,no_root_squash)
+[root@rhellab1 ~]# exportfs -a
+[root@rhellab1 ~]# exportfs -v
+/home         	<world>(sync,wdelay,hide,no_subtree_check,sec=sys,rw,secure,no_root_squash,no_all_squash)
+/opt          	<world>(sync,wdelay,hide,no_subtree_check,sec=sys,rw,secure,no_root_squash,no_all_squash)
+
+
+- REMOTE MOUNT
+dnf group install "Network File System Client"
+/etc/fstab
+192.168.3.101:/home	/home	nfs	defaults 0 0
