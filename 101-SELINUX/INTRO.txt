@@ -30,3 +30,46 @@ Max kernel policy version:      33
 System will relabel on next boot
 [root@rhellab1 ~]# 
 
+
+-> LABEL
+SELINUX secures parts of the OS by using LABELS
+
+Applied to the initiator( users, processes ) as well as a target object ( files,ports)
+
+The Labels are defined in contexts
+
+CONTEXT has three parts:    USER, ROLE, and TYPE
+
+TYPE is the most important
+
+system_u:system_r:sshd_t
+system_u:system_r:chronyd_t
+
+-Z
+
+
+[root@rhellab2 ~]# ss -pluntZ | egrep sshd
+tcp   LISTEN 0      128          0.0.0.0:22         0.0.0.0:*    users:(("sshd",pid=1248,proc_ctx=system_u:system_r:sshd_t:s0-s0:c0.c1023,fd=3))
+tcp   LISTEN 0      128             [::]:22            [::]:*    users:(("sshd",pid=1248,proc_ctx=system_u:system_r:sshd_t:s0-s0:c0.c1023,fd=4))
+[root@rhellab2 ~]# ss -pluntZ | egrep chrony
+udp   UNCONN 0      0          127.0.0.1:323        0.0.0.0:*    users:(("chronyd",pid=1176,proc_ctx=system_u:system_r:chronyd_t:s0,fd=5))      
+udp   UNCONN 0      0              [::1]:323           [::]:*    users:(("chronyd",pid=1176,proc_ctx=system_u:system_r:chronyd_t:s0,fd=6))   
+
+
+[root@rhellab2 ~]# ps axwuZ | egrep sshd
+system_u:system_r:sshd_t:s0-s0:c0.c1023 root 1248 0.0  0.1  17208 10924 ?        Ss   07:49   0:00 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+system_u:system_r:sshd_t:s0-s0:c0.c1023 root 2904 0.0  0.1  20476 13668 ?        Ss   07:49   0:00 sshd: rescue [priv]
+
+
+[trent@bmf RHCSA]$ ls -ldZ /etc/hosts
+-rw-r--r--. 1 root root system_u:object_r:net_conf_t:s0 232 Dec 27 11:07 /etc/hosts
+[trent@bmf RHCSA]$ ls -ldZ /var/ftp/
+
+drwxr-xr-x. 2 root root system_u:object_r:public_content_t:s0 6 Jun 25  2024 /var/ftp/
+[trent@bmf RHCSA]$ 
+
+[trent@bmf RHCSA]$ ls -ldZ /var/www/html/
+drwxr-xr-x. 4 root root system_u:object_r:httpd_sys_content_t:s0 49 Jan 10 13:45 /var/www/html/
+[trent@bmf RHCSA]$ ls -ldZ /var/www/cgi-bin/
+drwxr-xr-x. 2 root root system_u:object_r:httpd_sys_script_exec_t:s0 6 Jan 10 13:45 /var/www/cgi-bin
+

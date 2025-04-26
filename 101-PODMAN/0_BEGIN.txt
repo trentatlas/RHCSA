@@ -1,0 +1,74 @@
+
+ podman login
+ podman search
+ podman pull
+ podman images
+
+ podman ps [ running ]
+ podman ps -a [ all that are no longer running ]
+ podman run
+
+
+-- [podsvc1@rhellab3 ~]$ podman pull registry.redhat.io/ubi9
+Trying to pull registry.redhat.io/ubi9:latest...
+Getting image source signatures
+Checking if image destination supports signatures
+Copying blob 36b61797c1e3 done  
+Copying blob e996822e3bf3 done  
+Copying config 0222f91775 done  
+Writing manifest to image destination
+Storing signatures
+0222f917758423d756359f1ced02cb550737154ce1c44d7cb691bd86e0365067
+[podsvc1@rhellab3 ~]$ --
+
+
+ podman run ubi
+ podman ps
+ podman ps -a
+ podman run ubi echo Hello World
+ podman run -d nginx
+ podman run -it ubi /bin/bash
+
+
+
+ --- 
+
+[podsvc1@rhellab3 ~]$ podman ps -a
+CONTAINER ID  IMAGE                                     COMMAND               CREATED         STATUS                      PORTS       NAMES
+3b972bcb78e2  registry.redhat.io/ubi9:latest            /bin/bash             14 minutes ago  Exited (0) 14 minutes ago               charming_moser
+d37e6434a6b7  registry.redhat.io/ubi9:latest            echo Hello World      14 minutes ago  Exited (0) 14 minutes ago               agitated_lamport
+119498ab60c0  registry.redhat.io/ubi9/nginx-124:latest  /bin/sh -c $STI_S...  12 minutes ago  Exited (0) 12 minutes ago               peaceful_proskuriakova
+c1daab2e5cbd  registry.redhat.io/ubi9/nginx-124:latest  /bin/sh -c $STI_S...  11 minutes ago  Exited (0) 11 minutes ago               nice_matsumoto
+a933b9bdcccd  registry.redhat.io/ubi9/nginx-124:latest  /bin/sh -c $STI_S...  11 minutes ago  Exited (0) 11 minutes ago               happy_neumann
+06dca463287f  registry.redhat.io/ubi9:latest            /bin/bash             10 minutes ago  Exited (127) 6 minutes ago              focused_hugle
+[podsvc1@rhellab3 ~]$ podman rm 119498ab60c0
+119498ab60c0
+[podsvc1@rhellab3 ~]$ podman rm c1daab2e5cbd
+c1daab2e5cbd
+[podsvc1@rhellab3 ~]$ podman rm a933b9bdcccd
+a933b9bdcccd
+
+
+------------------------------------------------
+[podsvc1@rhellab3 ~]$ podman image rm  d6316668e05a
+Untagged: registry.redhat.io/ubi9/nginx-124:latest
+Deleted: d6316668e05ad3ae53b1044e8217c5d1cc6811cd5c20efec0037a967d22c6055
+[podsvc1@rhellab3 ~]$ podman images
+REPOSITORY               TAG         IMAGE ID      CREATED     SIZE
+registry.redhat.io/ubi9  latest      0222f9177584  6 days ago  213 MB
+
+
+
+podman stop
+podman start
+podman inspect
+podman exec -it NAME sh -- SECONDARY
+podman run -it NAME sh  -- PRIMARY
+
+CTRL -p /q 
+
+podman attache NAME_CONTAINER
+
+
+
+

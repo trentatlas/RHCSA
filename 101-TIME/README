@@ -1,0 +1,12 @@
+
+https://support.system76.com/articles/windows/#fixing-the-system-clock
+
+
+Windows and Linux store their time in the UEFI firmware differently. This can cause the clock to become de-synchronized when you switch from one OS to the other.
+
+timedatectl set-local-rtc 1 --adjust-system-clock
+timedatectl
+
+You should see RTC in local TZ: yes in the output. If you need to revert this setting, turn it back off with this command:
+
+timedatectl set-local-rtc 0 --adjust-system-clock

@@ -24,3 +24,16 @@ last 10 lines
 
 #journalctl -u sshd.service
 
+
+-> 
+
+[root@rhellab2 ~]# journalctl --since "2025-02-15 13:29:00" --until "2025-02-15 13:30:00" 
+-- No entries --
+[root@rhellab2 ~]# journalctl --since "2025-02-15 13:28:00" --until "2025-02-15 13:30:00" 
+Feb 15 13:28:12 rhellab2.aegisdawn.com systemd[1]: Starting Check PMIE instances are running...
+Feb 15 13:28:12 rhellab2.aegisdawn.com systemd[1]: Starting Check and migrate non-primary pmie farm instances...
+Feb 15 13:28:12 rhellab2.aegisdawn.com systemd[1]: Started Check and migrate non-primary pmie farm instances.
+Feb 15 13:28:12 rhellab2.aegisdawn.com systemd[1]: Started Check PMIE instances are running.
+Feb 15 13:28:12 rhellab2.aegisdawn.com systemd[1]: pmie_farm_check.service: Deactivated successfully.
+Feb 15 13:28:12 rhellab2.aegisdawn.com systemd[1]: pmie_check.service: Deactivated successfully.
+

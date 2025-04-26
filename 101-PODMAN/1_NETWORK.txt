@@ -1,0 +1,30 @@
+
+-- SUDO rootful containers have an IP
+[podsvc1@rhellab3 ~]$ sudo podman run -d registry.redhat.io/rhel9/httpd-24
+Trying to pull registry.redhat.io/rhel9/httpd-24:latest...
+Getting image source signatures
+Checking if image destination supports signatures
+Copying blob 493ac720113a done  
+Copying blob e996822e3bf3 done  
+Copying blob 36b61797c1e3 done  
+Copying blob dc0ba914e0f1 done  
+Copying blob f1950a7bce72 done  
+Copying blob 9f3cc472d99b done  
+Copying config 82bfdd0fa9 done  
+Writing manifest to image destination
+Storing signatures
+a3b004bd306290fb2f4c5693a5a0c8af626d3dbc0b2cb93872ac336e3f673d7c
+
+
+[root@rhellab3 ~]# ip a
+3: podman0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 6e:19:3d:7d:39:cd brd ff:ff:ff:ff:ff:ff
+    inet 10.88.0.1/16 brd 10.88.255.255 scope global podman0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::6c19:3dff:fe7d:39cd/64 scope link 
+       valid_lft forever preferred_lft forever
+4: veth0@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master podman0 state UP group default qlen 1000
+    link/ether 46:f9:61:f8:1c:1c brd ff:ff:ff:ff:ff:ff link-netns netns-21e26b04-317b-4f35-bc4a-d68f9a4dae40
+    inet6 fe80::44f9:61ff:fef8:1c1c/64 scope link 
+       valid_lft forever preferred_lft forever
+

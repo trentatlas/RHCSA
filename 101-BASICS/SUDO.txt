@@ -1,0 +1,6 @@
+
+#visudo
+Defaults timestamp_type=global,timestamp_timeout=300
+
+
+

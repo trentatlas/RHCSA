@@ -1,0 +1,72 @@
+
+DRs: LDAP  -- update /etc/group
+# id who
+uid=1809200006(who) gid=40000(DR) groups=40000(DR)
+
+[root@rhellab3 ~]# id strange
+uid=1809200005(strange) gid=40000(DR) groups=40000(DR)
+
+[root@rhellab3 ~]# ls -ld /opt/UNIVERSITY/
+drwxrwx---. 3 root UNIVERSITY 4096 Feb 22 17:59 /opt/UNIVERSITY/
+
+[root@rhellab3 ~]# tail -1 /etc/group
+UNIVERSITY:x:30000:who,strange
+
+
+[root@rhellab3 ~]# id strange
+uid=1809200005(strange) gid=40000(DR) groups=40000(DR),30000(UNIVERSITY)
+
+[root@rhellab3 ~]# id who
+uid=1809200006(who) gid=40000(DR) groups=40000(DR),30000(UNIVERSITY)
+
+
+
+DRs - who,strange
+
+STAFF - tony,mike
+
+STUDENTS - larry, moe, and curly
+
+750 UNIVERSITY
+drwxr-x---. 3 root UNIVERSITY 4096 Feb 23 09:13 UNIVERSITY
+
+# useradd -c "UNIVERSITY" -g UNIVERSITY -u 30000 -s /sbin/nologin -d /home/UNIVERSITY -m UNIVERSITY
+UNIVERSITY:x:30000:30000:UNIVERSITY:/home/UNIVERSITY:/sbin/nologin
+
+
+[root@rhellab3 UNIVERSITY]# ll
+total 28
+drwxr-x---. 2 UNIVERSITY DR       4096 Feb 23 09:23 DR
+drwx------. 2 root       root    16384 Feb 22 17:59 lost+found
+drwxr-x---. 2 UNIVERSITY STAFF    4096 Feb 23 09:23 STAFF
+drwxr-x---. 2 UNIVERSITY STUDENT  4096 Feb 23 09:23 STUDENT
+
+
+
+[root@rhellab3 UNIVERSITY]# ll
+total 28
+drwxr-x---. 2 UNIVERSITY DR       4096 Feb 23 09:23 DR
+drwx------. 2 root       root    16384 Feb 22 17:59 lost+found
+drwxr-x---. 2 UNIVERSITY STAFF    4096 Feb 23 09:23 STAFF
+drwxr-x---. 2 UNIVERSITY STUDENT  4096 Feb 23 09:23 STUDENT
+
+
+
+
+1.) mkdir STAFF
+2.) chown UNIVERSITY:STAFF STAFF/
+3.) setfacl -R -m  g:STAFF:rwx STAFF
+4.) setfacl -R -m d:g:STAFF:rwx STAFF/
+
+now STAFF can w/r in 
+[mike@rhellab3 UNIVERSITY]$ id
+uid=1002(mike) gid=30000(UNIVERSITY) groups=30000(UNIVERSITY),10000(STAFF)
+
+[mike@rhellab3 ~]$ newgrp STAFF
+
+
+
+
+
+
+

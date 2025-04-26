@@ -1,0 +1,26 @@
+
+-> Type Enforcement
+define a label to a process
+
+EXAMPLE TYPES
+CAT ( HTTPD )     DOG ( POSTFIX )
+
+OBJECT TYPES:
+CAT_CHOW	  DOG_CHOW
+
+CAT has permission to CAT_CHOW
+DOG has permission to DOG_CHOW
+
+BOTH ALLOWED to EAT
+
+CAT_CHOW:FOOD + EAT
+DOG_CHOW:FOOD + EAT
+
+SELINUX/KERNEL 
+
+DOG doesn't have access to CAT_CHOW:FOOD
+CAT doesn't have access to DOG_CHOW:FOOD
+
+
+Apache POSTFIX not allowed to read /etc/passwd
+

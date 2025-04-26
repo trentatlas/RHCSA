@@ -1,0 +1,36 @@
+
+[root@rhellab3 ~]# cut -d : -f 1 /etc/passwd | sort
+adm
+avahi
+bin
+bob
+
+
+[root@rhellab3 ~]# awk -F :  '{print $1 }' /etc/passwd | sort | head
+adm
+avahi
+bin
+
+
+[root@rhellab3 ~]# find / -user bob -type f 2> /dev/null
+/home/bob/.bash_logout
+/home/bob/.bash_profile
+/home/bob/.bashrc
+/home/bob/.zshrc
+/var/spool/mail/bob
+
+
+[root@rhellab3 ~]# find / -user bob -type f 2> /dev/null -exec cp {} /root/userfiles/ \;
+[root@rhellab3 ~]# ls -l userfiles/
+total 0
+-rw-r-----. 1 root root 0 Feb 22 09:38 bob
+[root@rhellab3 ~]# ls -la userfiles/
+total 20
+drwxr-x---. 2 root root   87 Feb 22 09:38 .
+dr-xr-x---. 9 root root 4096 Feb 22 09:38 ..
+-rw-r-----. 1 root root   18 Feb 22 09:38 .bash_logout
+-rw-r-----. 1 root root  141 Feb 22 09:38 .bash_profile
+-rw-r-----. 1 root root  492 Feb 22 09:38 .bashrc
+-rw-r-----. 1 root root    0 Feb 22 09:38 bob
+-rw-r-----. 1 root root  658 Feb 22 09:38 .zshrc
+[root@rhellab3 ~]# 

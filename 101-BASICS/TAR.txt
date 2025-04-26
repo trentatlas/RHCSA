@@ -67,4 +67,15 @@ total 8.0K
 drwxr-x--- 2 trent trent 4.0K Jan  3 13:19 Pinnacle
 drwxr-x--- 3 trent trent 4.0K Jan  3 13:51 podman
 
+3.) tar.gz
+
+
+RELATIVE FILENAMES
+#cd /etc
+#tar czvf /root/archive.tgz .
+
+ABSOULTUE FILE NAMES
+#tar -czvf /root/archive.tgz /etc
+
+
 
