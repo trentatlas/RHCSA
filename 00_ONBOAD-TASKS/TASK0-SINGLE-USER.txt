@@ -1,0 +1,27 @@
+
+ro -> rw
+-> rd.break
+
+In Red Hat systems, rd.break is a boot parameter that interrupts the standard boot process before services, including SELinux, are loaded
+
+ 
+#mount -o rw,remout /
+#chroot /sysroot
+
+
+
+-> emergency.target vs rescue.target
+Need to know root password.
+
+Give root password for maintenance 
+(or press Control-D to continue )
+systemd.unit= emergency.target vs rescue.target
+
+
+#exec /usr/lib/systemd/systemd
+
+# systemctl list-dependencies rescue.target
+# systemctl list-dependencies emergency.target
+
+enp8s0
+

@@ -1,0 +1,18 @@
+
+Absolute Path
+- /home/student/FILES
+
+
+Relative Path
+
+cd /etc  .
+[trent@bmf ONBOAD-TASKS]$ pwd
+/opt/trent/GitHub/RHCSA/
+
+cd ONBOAD-TASKS
+
+
+
+find / ! -fstype procfs ! -path '*/sys/*' ! -path '*/proc/*' ! -path '*/run/*' -type f -user student
+
+find / ! -fstype procfs ! -path '*/sys/*' ! -path '*/proc/*' ! -path '*/run/*' -type f -user student -exec cp -p '{}' /root/student/ \; 2> /dev/null
