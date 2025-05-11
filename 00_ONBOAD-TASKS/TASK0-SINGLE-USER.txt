@@ -1,4 +1,14 @@
 
+rd.break
+
+emergency.target - MIN ENV need root password
+
+rescue.target - MORE than emergency.target
+
+multi-user.target
+graphical.target
+
+
 ro -> rw
 -> rd.break
 
